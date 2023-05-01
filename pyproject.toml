@@ -1,0 +1,21 @@
+[project]
+name = "summarize_everything"
+description = "summarize_everything package"
+authors = [
+    { name = "Artem Gorokhov", email = "branntart@gmail.com" }
+]
+dynamic = ["version", "readme", "dependencies", "optional-dependencies"]
+
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "summarizer.VERSION"}
+readme = {file = ["README.md"]}
+dependencies = {file = ["requirements/main.txt"]}
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = {file = ["requirements/dev.txt"]}
+telegram = {file = ["requirements/telegram.txt"]}
