@@ -25,6 +25,13 @@ def start(update, context):
         "Hi! I'm a summarizer bot. Send me a message and I'll summarize it for you."
     )
 
+def get_updater():
+    """Get the updater for the bot."""
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, summarize))
+    return updater
 
 def summarize(update, context):
     """Summarize the message sent to the bot."""
@@ -41,28 +48,22 @@ def summarize(update, context):
         update.message.reply_text(error_message)
     update.message.reply_text(summary)
 
-def webhook(request, dispatcher, bot):
+def webhook(request, dispatcher):
     """Handle webhook requests from Telegram"""
-    update = Update.de_json(request.get_json(force=True), bot)
+    update = Update.de_json(request.get_json(force=True), dispatcher.bot)
     dispatcher.process_update(update)
     return "ok"
 
 def start_polling():
     """Start the bot."""
-    updater = Updater(TOKEN, use_context=True)
-    dp = updater.dispatcher
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, summarize))
+    updater = get_updater()
     logger.info("Starting bot")
     updater.start_polling()
     updater.idle()
 
 def start_webhook(url, host, port):
     """Start the bot."""
-    updater = Updater(TOKEN, use_context=True)
-    dp = updater.dispatcher
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, summarize))
+    updater = get_updater()
     logger.info("Starting bot")
     updater.start_webhook(listen=host, port=port, url_path=TOKEN, webhook_url=f"{url}/{TOKEN}")
 
