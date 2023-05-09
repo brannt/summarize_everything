@@ -1,3 +1,3 @@
 {
-    "rewrites": [{ "source": "/tgbot/:token", "destination": "/api/tgbot/:token" }]
+    "rewrites": [{ "source": "/tgbot/:token", "destination": "/api/tgbot/" }]
 }
