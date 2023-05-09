@@ -48,14 +48,11 @@ def summarize(update, context):
         update.message.reply_text(error_message)
     update.message.reply_text(summary)
 
-def webhook(update_json, dispatcher):
+def webhook(dispatcher, update_json):
     """Handle webhook requests from Telegram"""
     update = Update.de_json(update_json, dispatcher.bot)
     dispatcher.process_update(update)
-    return {
-        "statusCode": 200,
-        "body": "ok"
-    }
+    return "ok"
 
 def start_polling():
     """Start the bot."""
