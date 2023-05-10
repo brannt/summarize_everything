@@ -39,6 +39,7 @@ def summarize(update, context):
     message_text = update.message.text
     try:
         summary = extract_and_summarize(message_text)
+        update.message.reply_text(summary)
     except Exception as e:
         # Handle the error
         error_message = "There was an error processing your request."
@@ -46,8 +47,7 @@ def summarize(update, context):
             error_message += "\n\n" + traceback.format_exc()
         
         update.message.reply_text(error_message)
-    update.message.reply_text(summary)
-
+    
 def webhook(dispatcher, update_json):
     """Handle webhook requests from Telegram"""
     update = Update.de_json(update_json, dispatcher.bot)

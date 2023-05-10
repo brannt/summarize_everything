@@ -12,7 +12,7 @@ extract_and_summarize(youtube_url_or_text)
 ```
 
 ## Telegram bot
-An integration with a basic Telegram bot using long-polling si included. 
+An integration with a basic Telegram bot using long-polling is included. 
 You can send URLs and articles to the bot. To run the bot, install the package locally
 and run
 ```
@@ -25,7 +25,6 @@ SUMMARIZER_TELEGRAM_BOT_TOKEN variable needs to be set to run the bot.
 
 ## TODOs:
 - More sources: web article links, podcasts, media files, chat threads, etc.
-- Webhook implementation of the Telegram bot to be run serverless on Vercel/Lambda
 - More integrations: other messenger bots, webapp?
 - Better management of configurations and API keys
 - Multi-tenant mode for integrations: allow each user to provide their own API key

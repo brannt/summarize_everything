@@ -36,12 +36,6 @@ def youtube_get_audio(video_url):
         ydl_opts = {
             "format": "bestaudio/best",
             "outtmpl": temp_dir + '/%(title)s.%(ext)s',
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "m4a",
-                }
-            ],
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             filename_collector = FilenameCollectorPP()
