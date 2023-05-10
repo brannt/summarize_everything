@@ -6,6 +6,8 @@ from typing import Tuple
 import dotenv
 import openai
 import yt_dlp
+from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.formatters import TextFormatter
 
 dotenv.load_dotenv()
 
@@ -18,17 +20,26 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def extract_text(source: str) -> Tuple[str, SourceType]:
     """Extract text from a source."""
     if source.startswith("https://www.youtube.com/watch?v=") or source.startswith("https://youtu.be/"):
-        return youtube_extract(source), SourceType.VIDEO
+        return youtube_extract_transcriptapi(source), SourceType.VIDEO
     elif len(source) >= 1000:
         return source, SourceType.ARTICLE
     # TODO: Add support for web article links, podcasts, media files, etc.
     else:
         raise NotImplementedError(f"Source {source} not supported.")
 
-def youtube_extract(video_url):
+def youtube_extract_whisper(video_url):
     with youtube_get_audio(video_url) as audio_file:
         return extract_text_from_audio(audio_file)
-    
+
+def youtube_extract_transcriptapi(video_url):
+    if video_url.startswith("https://youtu.be/"):
+        video_id = video_url.split('/')[-1]
+    else:
+        video_id = video_url.split('=')[-1]
+    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+    transcript = next(iter(transcript_list)).fetch()
+    return TextFormatter().format_transcript(transcript)
+
     
 @contextlib.contextmanager
 def youtube_get_audio(video_url):
